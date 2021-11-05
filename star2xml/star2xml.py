@@ -46,7 +46,7 @@ arg_parser = argparse.ArgumentParser(prog = "star2xml.py",
                                      description = """A script to transform an input file (.csv, .tsv or .xlsx) into one (or more) dataframe(s), and
                                                     then build one (or more) XML(s) with its information following the XML structure described in a YAML file""",
                                      epilog = """Example of usage: $ ./star2xml.py "study,sample,analysis,experiment,run,dataset,submission,dac,policy" 
-                                     "../templates/sequence-based-metadata/EGA_metadata_submission_template_v1.xlsx" --validate""")
+                                     "EGA_metadata_submission_template_v1.xlsx" --validate""")
 
 arg_parser.add_argument('schema_keys',
                         help = """Schema keys for the metadata object. Can be a single key (e.g. "sample", "run", "experiment"...), 

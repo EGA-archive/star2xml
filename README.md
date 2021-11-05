@@ -12,16 +12,16 @@
 4. [Configuration files](#Configuration-files)
 5. [Common issues](#Common-issues)
 ## Overview
-The Star2xml tool eases the process of XML creation prior metadata submission to the European Genome-phenome Archive (EGA).
+The star2xml tool eases the process of XML creation prior metadata submission to the European Genome-phenome Archive (EGA).
 * **What?**
     * A compilation of Python scripts that automatically generate correctly formatted XMLs containing metadata. Additionally it can validate such XMLs against [ENA's schemas](https://github.com/enasequence/schema/tree/master/src/main/resources/uk/ac/ebi/ena/sra/schema) (`.xsd` files).
 * **How?**
-    * Given an **input file** (`.csv`, `.tsv` or `.xlsx`) the tool follows an XML structure (defined in a `YAML` [schema file](configuration_files/xml_schema.yaml)) assigning each field of the input file to its corresponding XML node's characteristics.
+    * Given an **input file** (`.csv`, `.tsv` or `.xlsx`) the tool follows an XML structure (defined in a `YAML` [schema file](star2xml/configuration_files/xml_schema.yaml)) assigning each field of the input file to its corresponding XML node's characteristics.
 * **Where?**
-    * Tool's scripts can be found in [Star2xml directory](./).
-    * Required Python packages can be found at [requirements.txt](requirements.txt).
-    * Use the file [``EGA_metadata_submission_template_v1.xlsx``](../templates/sequence-based-metadata/EGA_metadata_submission_template_v1.xlsx) as a template to fill in with your data, which can be used as the input for the Star2xml tool. Further information about its format and how to fill each of their tabs exists in [its section](#Filling-out-templates) on this README.
-    * Configuration files (`input_configuration.yaml` and `xml_schema.yaml`) reside in the [configurations directory](configuration_files/). Information regarding their structure and how to modify them is located both within the files themselves and [their section](#Configuration-files) on this README.
+    * Tool's scripts can be found in [star2xml directory](star2xml/).
+    * Required Python packages can be found at [requirements.txt](star2xml/requirements.txt).
+    * Use the file [``EGA_metadata_submission_template_v1.xlsx``](https://github.com/EbiEga/ega-metadata-schema/blob/8dca24c694b0c005f1b0d665f1c6900e766f38d7/templates/array-based-metadata/EGA_Array_based_Format_V4.3.xlsx) as a template to fill in with your data, which can be used as the input for the star2xml tool. Further information about its format and how to fill each of their tabs exists in [its section](#Filling-out-templates) on this README.
+    * Configuration files (`input_configuration.yaml` and `xml_schema.yaml`) reside in the [configurations directory](star2xml/configuration_files/). Information regarding their structure and how to modify them is located both within the files themselves and [their section](#Configuration-files) on this README.
 
 
 We highly recommend you to take a look at the recorded session "[Star2xml: metadata converter](https://embl-ebi.cloud.panopto.eu/Panopto/Pages/Viewer.aspx?id=58d299c7-7e25-4b48-8fc3-ad18011ef0b4)", where we go through an overview of what the basic usage of the tool is and how to use it. Likewise, there is a second video tutorial that covers the [programmatic submission](https://embl-ebi.cloud.panopto.eu/Panopto/Pages/Viewer.aspx?id=497e5189-5883-4290-941b-ad2800af6636) that follows the creation of metadata XMLs. 
@@ -47,8 +47,8 @@ You may want to install the latest versions of this packages and check if it wor
 To install Python dependencies:
 ```bash
 # Step 1. Cloning the tools repository
-git clone https://github.com/EbiEga/ega-metadata-schema.git
-cd ega-metadata-schema/Star2xml/
+git clone https://github.com/EGA-archive/star2xml.git
+cd star2xml/star2xml/
 # Step 2. Creating and activating the virtual environment
 virtualenv -p python3 venv_star2xml
 source venv_star2xml/bin/activate
@@ -91,19 +91,19 @@ optional arguments:
   --debug               A boolean switch to set the functions in "debug" mode, which will add even more verbosity to the function (printing every step of the XML creation...)
   --validate            A boolean switch that will enable the validation of the scripts right after its creation. Thus, the function will call validateXML.py (in verbose mode) after it has finished creating the XMLs.
 
-Example of usage: $ ./star2xml.py "study,sample,analysis,experiment,run,dataset,submission,dac,policy" "../templates/sequence-based-metadata/EGA_metadata_submission_template_v1.xlsx" --validate
+Example of usage: $ ./star2xml.py "study,sample,analysis,experiment,run,dataset,submission,dac,policy" "EGA_metadata_submission_template_v1.xlsx" --validate
 ```
 
 The **input file** will commonly be a **spreadsheet** with a tab named after each of the metadata objects (_e.g._ "run") we want to convert into XMLs. Instead of a joint spreadsheet, the tool also accepts **Comma and Tab Separated Values** (.csv and .tsv) files, each of which would contain data of one single metadata object (similar to one tab of the joint template). 
 
-For example, the joint template ([``EGA_metadata_submission_template_v1.xlsx``](../templates/sequence-based-metadata/EGA_metadata_submission_template_v1.xlsx)) contains a tab for each possible metadata object. Within each of them, one row corresponds to one metadata instance (_e.g._ one ``run`` per row), and each column to one field of information for such instance. In case we were interested in creating an XML containing the Run's metadata we would execute the following command:
+For example, the joint template ([``EGA_metadata_submission_template_v1.xlsx``](https://github.com/EbiEga/ega-metadata-schema/blob/8dca24c694b0c005f1b0d665f1c6900e766f38d7/templates/array-based-metadata/EGA_Array_based_Format_V4.3.xlsx)) contains a tab for each possible metadata object. Within each of them, one row corresponds to one metadata instance (_e.g._ one ``run`` per row), and each column to one field of information for such instance. In case we were interested in creating an XML containing the Run's metadata we would execute the following command:
 
 ``` Bash
-./star2xml.py  'run' '../templates/sequence-based-metadata/EGA_metadata_submission_template_v1.xlsx' --output_xmls 'output_xmls/run.xml' --schema-file 'configuration_files/xml_schema.yaml' --configuration-file 'configuration_files/input_configuration.yaml'
+./star2xml.py  'run' 'EGA_metadata_submission_template_v1.xlsx' --output_xmls 'output_xmls/run.xml' --schema-file 'configuration_files/xml_schema.yaml' --configuration-file 'configuration_files/input_configuration.yaml'
 ```
 Both `--schema-file` and `--configuration-file` arguments can be omitted if their corresponding filepaths have not been modified (by default in `configuration_files/`). Besides, if `--output_xmls` is also omitted, the output XMLs will be stored in `output_xmls/` by default. Thus, the command can be simplified:
 ``` Bash
-./star2xml.py  'run' '../templates/sequence-based-metadata/EGA_metadata_submission_template_v1.xlsx'
+./star2xml.py  'run' 'EGA_metadata_submission_template_v1.xlsx'
 ```
 One convenient optional argument that you can provide to the ``star2xml.py`` script is `--validate`, which will trigger the execution of the following script. In other words, this will not only create the desired XMLs, but also validate them against ENA's schemas with one single command.
 
@@ -147,17 +147,17 @@ To get started with the tool, you can execute the following commands:
 
 ```Bash
 # Create one single XML from one tab of the joint spreadsheet:
-./star2xml.py "sample" "../templates/sequence-based-metadata/EGA_metadata_submission_template_v1.xlsx" --verbose
+./star2xml.py "sample" "EGA_metadata_submission_template_v1.xlsx" --verbose
 
 # Validate the XML we just created:
 ./validateXML.py "sample" "output_xmls/sample.xml" --verbose --download_xsd
 
 # Create all possible XMLs from the joint template and validate each of them:
-./star2xml.py "study,sample,analysis,experiment,run,dataset,submission,dac,policy" "../templates/sequence-based-metadata/EGA_metadata_submission_template_v1.xlsx" --validate
+./star2xml.py "study,sample,analysis,experiment,run,dataset,submission,dac,policy" "EGA_metadata_submission_template_v1.xlsx" --validate
 ```
 
 ## Filling out templates
-For this part of the documentation we will be using the joint template ([``EGA_metadata_submission_template_v1.xlsx``](../templates/sequence-based-metadata/EGA_metadata_submission_template_v1.xlsx)), a spreadsheet, since it is the most commonly used format. Nevertheless, stripping off the formatting, you may use a similar logic while filling plain text formats (``.csv`` and ``.tsv``)
+For this part of the documentation we will be using the joint template ([``EGA_metadata_submission_template_v1.xlsx``](https://github.com/EbiEga/ega-metadata-schema/blob/8dca24c694b0c005f1b0d665f1c6900e766f38d7/templates/array-based-metadata/EGA_Array_based_Format_V4.3.xlsx)), a spreadsheet, since it is the most commonly used format. Nevertheless, stripping off the formatting, you may use a similar logic while filling plain text formats (``.csv`` and ``.tsv``)
 
 Based on the type of metadata objects you want to submit, you shall **fill their corresponding tabs** within such joint template. Each tab of the spreadsheet corresponds to one of the possible metadata objects (_e.g._ ``run``) from EGA, with the exception of the first tab, which is named ``Readme`` and contains information about the file's format. For all metadata tabs **each row will represent one repetition of a metadata object**. For example, each of the rows in the sample tab given as input will represent one ``<SAMPLE>`` node of the ``<SAMPLE_SET>`` in the final XML. All information that row contains will be associated with its corresponding ``<SAMPLE>`` node (its alias, description, etc.). 
 
@@ -179,20 +179,20 @@ Before filling the template, we need to recognize **two** different types of col
 
 1. **Non-repetitive columns**. These fields describe a characteristic (text or attribute) of **one single node** (_e.g._ `text: "Scientific_name"`) **for each metadata object** (_e.g._ ``<SAMPLE>``). Such columns can be hidden or left empty for some or all rows (unless required - see [column headers' format](#Column-header's-format) below), but **should not be deleted** (the tool will be looking for them). As an example, in the following image we have 5 of these columns from the analysis tab. 
 
-![2 rows of the sample template - Non repeated fields](miscellaneous/Sample_template_2rows_non-repeated.png)
+![2 rows of the sample template - Non repeated fields](star2xml/miscellaneous/Sample_template_2rows_non-repeated.png)
 
 2. **Repetitive columns**. These fields contain characteristics for **a node that can be repeated** (_e.g._ ``<SAMPLE_ATTRIBUTE>`` or ``<FILE>``) **within each metadata object** (_e.g._ ``<SAMPLE>`` or ``<ANALYSIS>``). These repeated columns are differently coloured (see [column's format](#Column-header's-format) below) and appear beyond a vertical thick black line (with the exception of ``subject_id``, ``sex`` and ``phenotype`` - the three public attributes from a sample tab). The important thing to notice is that the alternative colouring is there to help you identify what a "repetitive block" is. In the following image we have 9 of these columns, which correspond to 3 repetitions of the same ***repetitive block*** (in this case ``Tag-Value-Units``). These blocks can be added or deleted depending on your needs, but if there is a column from a repetitive block, their sibling columns are also required (even if left empty or hidden, just like ``Units`` for ``subject_id``, ``sex`` and ``phenotype``): in our example, if we add a new repetition with columns ``Tag`` and ``Value``, there needs to be a third one, ``Units``.  
 
-![2 rows of the sample template - Repeated fields](miscellaneous/Sample_template_2rows_repeated.png)
+![2 rows of the sample template - Repeated fields](star2xml/miscellaneous/Sample_template_2rows_repeated.png)
 
 Column names in the templates are **linked to the configuration files** (`input_configuration.yaml` and `xml_schema.yaml`), which leads to an important constraint: if there is a field described in a configuration file (_e.g._ ``center_name: "Center_name"``) there **needs** to be its corresponding column name within the input file (_e.g._ `Center_name`). In other words, unless the configuration file is properly modified, you shall not delete *non-repetitive columns* or completely delete all *repetitive blocks* from the input file. What you can do is leave them empty for some or all rows, or delete additional repetitive blocks that you don't need. At least one of each complete repetitive block (with all its sibling fields) needs to be present within the input file, even if you leave it empty for some or all rows. As we mentioned before, every empty coordinate of the spreadsheet will not be entered in the XML.
 
 The **order of columns is not relevant** as long as the repeated blocks' columns are not severely mixed (_e.g._ filling first `Tag` with the string corresponding to the second `Tag`). In fact, repeated columns can be mixed provided the order is maintained, thus making the following input valid.
 
-![2 rows of the sample template - Mixed, though correct, fields](miscellaneous/Sample_template_2rows_mixed.png)
+![2 rows of the sample template - Mixed, though correct, fields](star2xml/miscellaneous/Sample_template_2rows_mixed.png)
 
 This allows for a handy way of dealing with **hundreds or thousands of columns** in an easy way (being able to put all columns of the same type in a sequence). For instance, we may want to generate an Analysis XML based on our samples, but the analysis encompasses thousand of samples (*i.e.* thousands of rows in the sample tab, but thousands of columns in the analysis tab). Although there are multiple ways to input such columns, an easy approach is to use the **transpose function** (_e.g._ using excel - [help from microsoft](https://support.microsoft.com/en-us/office/transpose-rotate-data-from-rows-to-columns-or-vice-versa-3419f2e3-beab-4318-aae5-d0f862209744)). In our example the sample repetitive block contains 2 types of columns (``Sample_alias`` and ``Sample_Label``). Therefore, we can copy all the aliases from the sample tab (rows), and transpose them as columns into the analysis tab, do the same with the labels, and create the following input:
-![Example of using transpose to add columns](miscellaneous/Transpose_example.png)
+![Example of using transpose to add columns](star2xml/miscellaneous/Transpose_example.png)
 
 ### Column header's format
 
@@ -204,7 +204,7 @@ Additional information can be obtained from the colour of the column headers (fi
 * Grey: **optionally ignored columns**. Column headers that do not appear to be chosen for any metadata instance (row), and thus can be ignored (_i.e._ left empty) (based on multiple choice attributes). For instance, if our experiment's layout is ``SINGLE``, the two columns previously mentioned that are related to a paired experiment would be highlighted in grey. 
 * Other colours: **repetition blocks**. As we mentioned describing the [types of columns](#Types-of-columns), there are repeated columns. Their headers are alternatively coloured for each repeated class to ease their identification. Besides, the body of the column is coloured in a lighter colour than their headers alternating between *repeated blocks* of the same class. 
 
-![Header colours](miscellaneous/header_colours.png)
+![Header colours](star2xml/miscellaneous/header_colours.png)
 
 ## Configuration files
 
@@ -217,7 +217,7 @@ At base level, the file contains **information of the tool itself** (`tool_info`
 
 A simple example of *what is what*, with content from the `xml_schema.yaml` (_up_), the input file (_right_) and the output XML (_down_), is the following:
 
-![Configuration files - What is what schema](miscellaneous/Conf_arrow_schema.png)
+![Configuration files - What is what schema](star2xml/miscellaneous/Conf_arrow_schema.png)
 
 ### Modifying the schema
 If the metadata requirements change and existing fields need to be removed or new ones added, we will need to modify the two configuration files as well as the input files.
@@ -227,7 +227,7 @@ If the metadata requirements change and existing fields need to be removed or ne
 
 * **Missing fields of a repetitive block**. In the following example fields ``Value`` and ``Units`` are missing from the first and second ``Tag-Value-Units`` (one of the common *repetition blocks*), respectively. Remember that repeated blocks need to be complete (if there is a ``Tag`` column, its two siblings ``Value`` and ``Units`` need to be there), but you can leave empty such columns for all or some rows, since every empty coordinate of the spreadsheet will be ignored. 
 
-![2 rows of the sample template - Missing fields](miscellaneous/Sample_template_2rows_incorrect1.png)
+![2 rows of the sample template - Missing fields](star2xml/miscellaneous/Sample_template_2rows_incorrect1.png)
 
 * **Not using** the option `--download_xsd` the first time you try to validate XMLs: the schemas (`.xsd`) will be missing and the tool will throw the following error message:
 ``` Bash
@@ -236,7 +236,7 @@ ERROR in check_xml_is_valid(): the schema file 'downloaded_schemasXSD/SRA.sample
 * **Line endings being an issue**. When using different operating systems (e.g. using Windows Subsystem for Linux) an issue regarding line endings may arise when trying to execute the scripts (_e.g._ `/usr/bin/env: ‘python3\r’: No such file or directory` - notice the `/r` not being handled correctly by the interpreter). If such is the case, there are automatic ways to change all line endings within the scripts, which will solve the issue:
 ``` bash
 sudo apt install dos2unix
-# Within the 'Star2xml/' folder do:
+# Within the 'star2xml/' folder do:
 dos2unix ./*.py
 ```
 * **File permissions not being stablished by default**. In case executable files (e.g. ``star2xml.py``) are not executable by your user (take a look at its permissions - e.g. ``-rw-r--r--``), you will need to amend them manually (e.g. ``chmod u+x star2xml.py``).
