@@ -64,7 +64,7 @@ There are two main scripts you can run:
 * **star2xml.py**: used to **generate** XMLs.
 * **validateXML.py**: used to **validate** XMLs.
 
-Information of both scripts can be obtained using the command line help option [`-h`] (_e.g._ `./star2xml.py -h`) while executing each of them.
+Information of both scripts can be obtained using the command line help option [`-h`] (_e.g._ `python3 star2xml.py -h`) while executing each of them.
 
 ### star2xml.py
 ```
@@ -91,7 +91,7 @@ optional arguments:
   --debug               A boolean switch to set the functions in "debug" mode, which will add even more verbosity to the function (printing every step of the XML creation...)
   --validate            A boolean switch that will enable the validation of the scripts right after its creation. Thus, the function will call validateXML.py (in verbose mode) after it has finished creating the XMLs.
 
-Example of usage: $ ./star2xml.py "study,sample,analysis,experiment,run,dataset,submission,dac,policy" "EGA_metadata_submission_template_v1.xlsx" --validate
+Example of usage: $ python3 star2xml.py "study,sample,analysis,experiment,run,dataset,submission,dac,policy" "EGA_metadata_submission_template_v1.xlsx" --validate
 ```
 
 The **input file** will commonly be a **spreadsheet** with a tab named after each of the metadata objects (_e.g._ "run") we want to convert into XMLs. Instead of a joint spreadsheet, the tool also accepts **Comma and Tab Separated Values** (.csv and .tsv) files, each of which would contain data of one single metadata object (similar to one tab of the joint template). 
@@ -99,11 +99,11 @@ The **input file** will commonly be a **spreadsheet** with a tab named after eac
 For example, the joint template ([``EGA_metadata_submission_template_v1.xlsx``](https://github.com/EbiEga/ega-metadata-schema/blob/8dca24c694b0c005f1b0d665f1c6900e766f38d7/templates/array-based-metadata/EGA_Array_based_Format_V4.3.xlsx)) contains a tab for each possible metadata object. Within each of them, one row corresponds to one metadata instance (_e.g._ one ``run`` per row), and each column to one field of information for such instance. In case we were interested in creating an XML containing the Run's metadata we would execute the following command:
 
 ``` Bash
-./star2xml.py  'run' 'EGA_metadata_submission_template_v1.xlsx' --output_xmls 'output_xmls/run.xml' --schema-file 'configuration_files/xml_schema.yaml' --configuration-file 'configuration_files/input_configuration.yaml'
+python3 star2xml.py  'run' 'EGA_metadata_submission_template_v1.xlsx' --output_xmls 'output_xmls/run.xml' --schema-file 'configuration_files/xml_schema.yaml' --configuration-file 'configuration_files/input_configuration.yaml'
 ```
 Both `--schema-file` and `--configuration-file` arguments can be omitted if their corresponding filepaths have not been modified (by default in `configuration_files/`). Besides, if `--output_xmls` is also omitted, the output XMLs will be stored in `output_xmls/` by default. Thus, the command can be simplified:
 ``` Bash
-./star2xml.py  'run' 'EGA_metadata_submission_template_v1.xlsx'
+python3 star2xml.py  'run' 'EGA_metadata_submission_template_v1.xlsx'
 ```
 One convenient optional argument that you can provide to the ``star2xml.py`` script is `--validate`, which will trigger the execution of the following script. In other words, this will not only create the desired XMLs, but also validate them against ENA's schemas with one single command.
 
@@ -134,11 +134,11 @@ Schema keys (e.g. 'sample,run') and their input XMLs (e.g. 'sample.xml,run.xml')
 ```
 Just like with the previous script, here we can validate as many XML files as we want in one go. For instance, in the following example we validate two XML files (`sample.xml` and `run.xml`) that correspond to two different metadata objects (`sample` and `run`). It is important to notice that, if we have not downloaded yet the metadata schema files (`.xsd`), we should provide the option `--download_xsd` the first time we run `validateXML.py`.
 ```Bash
-./validateXML.py "sample,run" "output_xmls/sample.xml,output_xmls/run.xml" --schemas-dir "downloaded_schemasXSD/" --schema-file "configuration_files/xml_schema.yaml" --verbose --download_xsd
+python3 validateXML.py.py "sample,run" "output_xmls/sample.xml,output_xmls/run.xml" --schemas-dir "downloaded_schemasXSD/" --schema-file "configuration_files/xml_schema.yaml" --verbose --download_xsd
 ```
 Once again, if we have not modified the schema's filepath, option `--schema-file` can be omitted. Besides, `--schemas-dir` is by default `downloaded_schemasXSD/` and if we already downloaded the `.xsd` files, we can also omit the option `--download_xsd`. Thus, a simpler command would be:
 ```Bash
-./validateXML.py "sample,run" "output_xmls/sample.xml,output_xmls/run.xml" --verbose
+python3 validateXML.py.py "sample,run" "output_xmls/sample.xml,output_xmls/run.xml" --verbose
 ```
 It is worth mentioning that if there is an error while parsing the given XMLs (_e.g._ there are unclosed nodes - _i.e._ missing '`>`'), the validation will stop by default to notify the error. If this is not the desired behaviour, you may provide the optional argument `--dont_stop_parsing` to avoid terminating the execution, and instead report the file with errors as non-validated.
 
@@ -147,13 +147,13 @@ To get started with the tool, you can execute the following commands:
 
 ```Bash
 # Create one single XML from one tab of the joint spreadsheet:
-./star2xml.py "sample" "EGA_metadata_submission_template_v1.xlsx" --verbose
+python3 star2xml.py "sample" "EGA_metadata_submission_template_v1.xlsx" --verbose
 
 # Validate the XML we just created:
-./validateXML.py "sample" "output_xmls/sample.xml" --verbose --download_xsd
+python3 validateXML.py.py "sample" "output_xmls/sample.xml" --verbose --download_xsd
 
 # Create all possible XMLs from the joint template and validate each of them:
-./star2xml.py "study,sample,analysis,experiment,run,dataset,submission,dac,policy" "EGA_metadata_submission_template_v1.xlsx" --validate
+python3 star2xml.py "study,sample,analysis,experiment,run,dataset,submission,dac,policy" "EGA_metadata_submission_template_v1.xlsx" --validate
 ```
 
 ## Filling out templates

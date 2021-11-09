@@ -25,9 +25,9 @@ This script is based on work from an older project:
     - https://github.com/EBIvariation/amp-t2d-submissions/tree/master/xls2xml
 --------------------------------------------------------------------------
 For further information run:
-    $ ./star2xml.py -h
+    $ python3 star2xml.py -h
 Example:
-    $ ./star2xml.py "study,sample,analysis,experiment,run,dataset,submission,dac,policy" "../templates/sequence-based-metadata/whole_submission_template.xlsx" --validate
+    $ python3 star2xml.py "study,sample,analysis,experiment,run,dataset,submission,dac,policy" "../templates/sequence-based-metadata/whole_submission_template.xlsx" --validate
 
 ======
 This script was written and tested using python 3.8, functionality with
@@ -45,7 +45,7 @@ from datetime import datetime
 arg_parser = argparse.ArgumentParser(prog = "star2xml.py",
                                      description = """A script to transform an input file (.csv, .tsv or .xlsx) into one (or more) dataframe(s), and
                                                     then build one (or more) XML(s) with its information following the XML structure described in a YAML file""",
-                                     epilog = """Example of usage: $ ./star2xml.py "study,sample,analysis,experiment,run,dataset,submission,dac,policy" 
+                                     epilog = """Example of usage: $ python3 star2xml.py "study,sample,analysis,experiment,run,dataset,submission,dac,policy" 
                                      "EGA_metadata_submission_template_v1.xlsx" --validate""")
 
 arg_parser.add_argument('schema_keys',
@@ -202,8 +202,8 @@ for schemaKey in schema_keys:
     # We add 1 to the counter to extract the proper output XML name
     loop_counter += 1
 
-# In case we also want the validation step, we call ./validateXML.py: 
+# In case we also want the validation step, we call python3 validateXML.py: 
 if also_validate:
-    os.system('./validateXML.py --schema-file "%s" --download_xsd --verbose "%s" "%s"' \
+    os.system('python3 validateXML.py --schema-file "%s" --download_xsd --verbose "%s" "%s"' \
                 % (schema_file, ",".join(x.strip() for x in schema_keys), ",".join(xmls_for_validation)))
                 
