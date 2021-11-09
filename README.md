@@ -134,11 +134,11 @@ Schema keys (e.g. 'sample,run') and their input XMLs (e.g. 'sample.xml,run.xml')
 ```
 Just like with the previous script, here we can validate as many XML files as we want in one go. For instance, in the following example we validate two XML files (`sample.xml` and `run.xml`) that correspond to two different metadata objects (`sample` and `run`). It is important to notice that, if we have not downloaded yet the metadata schema files (`.xsd`), we should provide the option `--download_xsd` the first time we run `validateXML.py`.
 ```Bash
-python3 validateXML.py.py "sample,run" "output_xmls/sample.xml,output_xmls/run.xml" --schemas-dir "downloaded_schemasXSD/" --schema-file "configuration_files/xml_schema.yaml" --verbose --download_xsd
+python3 validateXML.py "sample,run" "output_xmls/sample.xml,output_xmls/run.xml" --schemas-dir "downloaded_schemasXSD/" --schema-file "configuration_files/xml_schema.yaml" --verbose --download_xsd
 ```
 Once again, if we have not modified the schema's filepath, option `--schema-file` can be omitted. Besides, `--schemas-dir` is by default `downloaded_schemasXSD/` and if we already downloaded the `.xsd` files, we can also omit the option `--download_xsd`. Thus, a simpler command would be:
 ```Bash
-python3 validateXML.py.py "sample,run" "output_xmls/sample.xml,output_xmls/run.xml" --verbose
+python3 validateXML.py "sample,run" "output_xmls/sample.xml,output_xmls/run.xml" --verbose
 ```
 It is worth mentioning that if there is an error while parsing the given XMLs (_e.g._ there are unclosed nodes - _i.e._ missing '`>`'), the validation will stop by default to notify the error. If this is not the desired behaviour, you may provide the optional argument `--dont_stop_parsing` to avoid terminating the execution, and instead report the file with errors as non-validated.
 
@@ -150,7 +150,7 @@ To get started with the tool, you can execute the following commands:
 python3 star2xml.py "sample" "EGA_metadata_submission_template_v1.xlsx" --verbose
 
 # Validate the XML we just created:
-python3 validateXML.py.py "sample" "output_xmls/sample.xml" --verbose --download_xsd
+python3 validateXML.py "sample" "output_xmls/sample.xml" --verbose --download_xsd
 
 # Create all possible XMLs from the joint template and validate each of them:
 python3 star2xml.py "study,sample,analysis,experiment,run,dataset,submission,dac,policy" "EGA_metadata_submission_template_v1.xlsx" --validate
