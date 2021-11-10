@@ -4,8 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-# [0.0.0]
-## 021-11-05
+## [Unreleased]
+
+
+## [1.0.0] - 21-11-05
 ### Added
 - [README.md](README.md) - README of the project, containing all the information related to the star2xml tool (usage, prerequisites, scripts...).
 - LICENSE - License applied to the [star2xml](https://github.com/EGA-archive/star2xml) project.
