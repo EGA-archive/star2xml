@@ -20,13 +20,13 @@ The star2xml tool eases the process of XML creation prior metadata submission to
 * **Where?**
     * Tool's scripts can be found in [star2xml directory](star2xml/).
     * Required Python packages can be found at [requirements.txt](star2xml/requirements.txt).
-    * Use the file [``EGA_metadata_submission_template_v1.xlsx``](https://github.com/EbiEga/ega-metadata-schema/blob/8dca24c694b0c005f1b0d665f1c6900e766f38d7/templates/array-based-metadata/EGA_Array_based_Format_V4.3.xlsx) as a template to fill in with your data, which can be used as the input for the star2xml tool. Further information about its format and how to fill each of their tabs exists in [its section](#Filling-out-templates) on this README.
+    * Use the file [``EGA_metadata_submission_template_v1.xlsx``](https://github.com/EbiEga/ega-metadata-schema/blob/main/templates/sequence-based-metadata/EGA_metadata_submission_template_v1.xlsx) as a template to fill in with your data, which can be used as the input for the star2xml tool. Further information about its format and how to fill each of their tabs exists in [its section](#Filling-out-templates) on this README.
     * Configuration files (`input_configuration.yaml` and `xml_schema.yaml`) reside in the [configurations directory](star2xml/configuration_files/). Information regarding their structure and how to modify them is located both within the files themselves and [their section](#Configuration-files) on this README.
 
 
 We highly recommend you to take a look at the recorded session "[Star2xml: metadata converter](https://embl-ebi.cloud.panopto.eu/Panopto/Pages/Viewer.aspx?id=58d299c7-7e25-4b48-8fc3-ad18011ef0b4)", where we go through an overview of what the basic usage of the tool is and how to use it. Likewise, there is a second video tutorial that covers the [programmatic submission](https://embl-ebi.cloud.panopto.eu/Panopto/Pages/Viewer.aspx?id=497e5189-5883-4290-941b-ad2800af6636) that follows the creation of metadata XMLs. 
 
-Currently **only metadata from Sequence data** (_e.g._ whole genome sequencing) **can be processed through star2xml**, while Array Format (AF) submissions have their own bespoken [procedures](https://ega-archive.org/submission/array_based/metadata) and [templates](https://github.com/EbiEga/ega-metadata-schema/blob/8dca24c694b0c005f1b0d665f1c6900e766f38d7/templates/array-based-metadata/EGA_Array_based_Format_V4.3.xlsx).
+Currently **only metadata from Sequence data** (_e.g._ whole genome sequencing) **can be processed through star2xml**, while Array Format (AF) submissions have their own bespoken [procedures](https://ega-archive.org/submission/array_based/metadata) and [templates](https://github.com/EbiEga/ega-metadata-schema/blob/main/templates/array-based-metadata/EGA_Array_based_Format_V4.3.xlsx).
 ## Usage
 ### Pre-requisites
 This tool was programmed in **Python** (**version 3.8+**) and depends on the following packages:
@@ -96,7 +96,7 @@ Example of usage: $ python3 star2xml.py "study,sample,analysis,experiment,run,da
 
 The **input file** will commonly be a **spreadsheet** with a tab named after each of the metadata objects (_e.g._ "run") we want to convert into XMLs. Instead of a joint spreadsheet, the tool also accepts **Comma and Tab Separated Values** (.csv and .tsv) files, each of which would contain data of one single metadata object (similar to one tab of the joint template). 
 
-For example, the joint template ([``EGA_metadata_submission_template_v1.xlsx``](https://github.com/EbiEga/ega-metadata-schema/blob/8dca24c694b0c005f1b0d665f1c6900e766f38d7/templates/array-based-metadata/EGA_Array_based_Format_V4.3.xlsx)) contains a tab for each possible metadata object. Within each of them, one row corresponds to one metadata instance (_e.g._ one ``run`` per row), and each column to one field of information for such instance. In case we were interested in creating an XML containing the Run's metadata we would execute the following command:
+For example, the joint template ([``EGA_metadata_submission_template_v1.xlsx``](https://github.com/EbiEga/ega-metadata-schema/blob/main/templates/sequence-based-metadata/EGA_metadata_submission_template_v1.xlsx)) contains a tab for each possible metadata object. Within each of them, one row corresponds to one metadata instance (_e.g._ one ``run`` per row), and each column to one field of information for such instance. In case we were interested in creating an XML containing the Run's metadata we would execute the following command:
 
 ``` Bash
 python3 star2xml.py  'run' 'EGA_metadata_submission_template_v1.xlsx' --output_xmls 'output_xmls/run.xml' --schema-file 'configuration_files/xml_schema.yaml' --configuration-file 'configuration_files/input_configuration.yaml'
@@ -157,7 +157,7 @@ python3 star2xml.py "study,sample,analysis,experiment,run,dataset,submission,dac
 ```
 
 ## Filling out templates
-For this part of the documentation we will be using the joint template ([``EGA_metadata_submission_template_v1.xlsx``](https://github.com/EbiEga/ega-metadata-schema/blob/8dca24c694b0c005f1b0d665f1c6900e766f38d7/templates/array-based-metadata/EGA_Array_based_Format_V4.3.xlsx)), a spreadsheet, since it is the most commonly used format. Nevertheless, stripping off the formatting, you may use a similar logic while filling plain text formats (``.csv`` and ``.tsv``)
+For this part of the documentation we will be using the joint template ([``EGA_metadata_submission_template_v1.xlsx``](https://github.com/EbiEga/ega-metadata-schema/blob/main/templates/sequence-based-metadata/EGA_metadata_submission_template_v1.xlsx)), a spreadsheet, since it is the most commonly used format. Nevertheless, stripping off the formatting, you may use a similar logic while filling plain text formats (``.csv`` and ``.tsv``)
 
 Based on the type of metadata objects you want to submit, you shall **fill their corresponding tabs** within such joint template. Each tab of the spreadsheet corresponds to one of the possible metadata objects (_e.g._ ``run``) from EGA, with the exception of the first tab, which is named ``Readme`` and contains information about the file's format. For all metadata tabs **each row will represent one repetition of a metadata object**. For example, each of the rows in the sample tab given as input will represent one ``<SAMPLE>`` node of the ``<SAMPLE_SET>`` in the final XML. All information that row contains will be associated with its corresponding ``<SAMPLE>`` node (its alias, description, etc.). 
 
